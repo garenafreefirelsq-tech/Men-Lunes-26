@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Menú del lunes</title>
+<style>
+:root{--bg:#fbfbfd;--bg2:#f5f5f7;--fg:#1d1d1f;--mute:#6e6e73;--ac:#0071e3;--card:#fff;--line:#d2d2d7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--bg2:#101012;--fg:#f5f5f7;--mute:#a1a1a6;--ac:#2997ff;--card:#1d1d1f;--line:#3a3a3c}}
+:root[data-theme="dark"]{--bg:#000;--bg2:#101012;--fg:#f5f5f7;--mute:#a1a1a6;--ac:#2997ff;--card:#1d1d1f;--line:#3a3a3c}
+html{scroll-behavior:smooth;scroll-snap-type:y proximity;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+section{min-height:100svh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:96px 24px;box-sizing:border-box;text-align:center}
+section:nth-of-type(even){background:var(--bg2)}
+.eye{color:var(--ac);font-weight:600;font-size:clamp(15px,2vw,21px);letter-spacing:.02em}
+h1,h2{margin:8px 0 0;font-weight:700;letter-spacing:-.035em;line-height:1.04}
+h1{font-size:clamp(56px,14vw,148px)}h2{font-size:clamp(48px,10vw,104px)}
+.sub{color:var(--mute);font-size:clamp(18px,2.6vw,28px);margin:16px 0 0;font-weight:500}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:16px;width:100%;max-width:1040px;margin-top:48px}
+.grid.one{max-width:260px}
+.card{background:var(--card);border-radius:28px;padding:28px 16px 24px;cursor:pointer;position:relative;border:0;font:inherit;color:inherit;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,opacity .35s;-webkit-tap-highlight-color:transparent}
+.card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 18px 40px rgba(0,0,0,.12)}
+.card:active{transform:scale(.97)}
+.card svg{width:112px;height:112px;display:block;margin:0 auto 12px;transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
+.card:hover svg{transform:scale(1.14) rotate(-5deg)}
+.card b{display:block;font-size:21px;font-weight:600;letter-spacing:-.01em}
+.q{display:inline-block;margin-top:10px;padding:5px 14px;border-radius:99px;background:var(--bg2);color:var(--ac);font-weight:600;font-size:16px}
+.chk{position:absolute;top:14px;right:14px;width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;color:#fff;font-size:15px;transition:all .3s}
+.card.done{opacity:.5}.card.done b{text-decoration:line-through}
+.card.done .chk{background:var(--ac);border-color:var(--ac);animation:pop .4s}
+.card.done .chk::after{content:"✓"}
+@keyframes pop{50%{transform:scale(1.35)}}
+.rv{opacity:0;transform:translateY(46px) scale(.97);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i,0)*90ms)}
+.in .rv,.rv.in{opacity:1;transform:none}
+.card.rv.in:hover{transform:translateY(-6px) scale(1.02);transition-delay:0s}
+.float{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 18px;margin-top:40px;max-width:760px}
+.float svg{width:clamp(44px,8vw,68px);height:auto;animation:fl 4s ease-in-out infinite;animation-delay:calc(var(--i)*-.4s)}
+@keyframes fl{50%{transform:translateY(-12px) rotate(4deg)}}
+.cta{margin-top:36px;color:var(--ac);font-size:21px;font-weight:500;text-decoration:none}
+.cta:hover{text-decoration:underline}
+.dots{position:fixed;right:max(14px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:5}
+.dots a{width:9px;height:9px;border-radius:50%;background:var(--line);transition:all .3s;display:block}
+.dots a.on{background:var(--ac);transform:scale(1.5)}
+.pill{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 12px);z-index:5;background:color-mix(in srgb,var(--card) 70%,transparent);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border:1px solid var(--line);border-radius:99px;padding:7px 16px;font-size:14px;font-weight:600;color:var(--fg);display:flex;gap:10px;align-items:center}
+.bar{width:64px;height:5px;border-radius:9px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;width:0;background:var(--ac);transition:width .5s}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}html{scroll-behavior:auto}}
+</style></head><body>
+<div class="pill"><span id="n">0/16</span><div class="bar"><i id="b"></i></div></div>
+<nav class="dots" id="dots"></nav>
+<main id="m"></main>
+<script>
+const IC={"brocoli": "<svg viewBox=\"0 0 100 100\" aria-label=\"Brócoli\" role=\"img\"><rect x=\"42\" y=\"55\" width=\"16\" height=\"35\" rx=\"6\" fill=\"#9cc86a\"/><circle cx=\"32\" cy=\"45\" r=\"18\" fill=\"#3f8f3a\"/><circle cx=\"52\" cy=\"32\" r=\"20\" fill=\"#4a9d42\"/><circle cx=\"70\" cy=\"46\" r=\"18\" fill=\"#3f8f3a\"/></svg>", "chuleta": "<svg viewBox=\"0 0 100 100\" aria-label=\"Chuleta\" role=\"img\"><path d=\"M18 55C14 30 40 14 66 20c18 4 20 28 12 42-10 18-54 22-60-7z\" fill=\"#c9794a\"/><circle cx=\"64\" cy=\"42\" r=\"11\" fill=\"#fff4e0\"/><circle cx=\"64\" cy=\"42\" r=\"4\" fill=\"#d9a77c\"/></svg>", "aceite": "<svg viewBox=\"0 0 100 100\" aria-label=\"Aceite\" role=\"img\"><rect x=\"40\" y=\"10\" width=\"20\" height=\"18\" rx=\"4\" fill=\"#e8b923\"/><rect x=\"26\" y=\"26\" width=\"48\" height=\"66\" rx=\"14\" fill=\"#f2c94c\"/><rect x=\"32\" y=\"48\" width=\"36\" height=\"22\" rx=\"4\" fill=\"#fff4cc\"/></svg>", "tortilla": "<svg viewBox=\"0 0 100 100\" aria-label=\"Tortilla\" role=\"img\"><circle cx=\"50\" cy=\"50\" r=\"38\" fill=\"#f0d9a0\"/><circle cx=\"36\" cy=\"40\" r=\"4\" fill=\"#c9a24f\"/><circle cx=\"60\" cy=\"34\" r=\"3\" fill=\"#c9a24f\"/><circle cx=\"64\" cy=\"62\" r=\"4\" fill=\"#c9a24f\"/><circle cx=\"38\" cy=\"66\" r=\"3\" fill=\"#c9a24f\"/></svg>", "soful": "<svg viewBox=\"0 0 100 100\" aria-label=\"Soful\" role=\"img\"><path d=\"M24 38h52l-8 48H32z\" fill=\"#e85d75\"/><ellipse cx=\"50\" cy=\"38\" rx=\"26\" ry=\"9\" fill=\"#f58ca0\"/><circle cx=\"50\" cy=\"24\" r=\"8\" fill=\"#b3203a\"/></svg>", "uva": "<svg viewBox=\"0 0 100 100\" aria-label=\"Uva\" role=\"img\"><circle cx=\"36\" cy=\"40\" r=\"13\" fill=\"#7a3f9d\"/><circle cx=\"62\" cy=\"40\" r=\"13\" fill=\"#8a4dad\"/><circle cx=\"49\" cy=\"58\" r=\"13\" fill=\"#7a3f9d\"/><circle cx=\"36\" cy=\"72\" r=\"13\" fill=\"#8a4dad\"/><circle cx=\"62\" cy=\"72\" r=\"13\" fill=\"#7a3f9d\"/><path d=\"M50 8c6 6 14 6 20 4-4 8-14 10-20 4z\" fill=\"#4a9d42\"/></svg>", "fresa": "<svg viewBox=\"0 0 100 100\" aria-label=\"Fresa\" role=\"img\"><path d=\"M50 90C20 70 12 46 18 34c8-14 26-8 32-4 6-4 24-10 32 4 6 12-2 36-32 56z\" fill=\"#e0314b\"/><path d=\"M34 22c8-8 24-8 32 0-8 4-24 4-32 0z\" fill=\"#3f8f3a\"/><circle cx=\"38\" cy=\"50\" r=\"2.5\" fill=\"#ffe3a0\"/><circle cx=\"58\" cy=\"46\" r=\"2.5\" fill=\"#ffe3a0\"/><circle cx=\"48\" cy=\"66\" r=\"2.5\" fill=\"#ffe3a0\"/></svg>", "lechuga": "<svg viewBox=\"0 0 100 100\" aria-label=\"Lechuga\" role=\"img\"><circle cx=\"50\" cy=\"56\" r=\"34\" fill=\"#8cc152\"/><circle cx=\"36\" cy=\"46\" r=\"22\" fill=\"#a4d46a\"/><circle cx=\"62\" cy=\"44\" r=\"22\" fill=\"#b6e07c\"/><circle cx=\"50\" cy=\"62\" r=\"18\" fill=\"#cdeb9a\"/></svg>", "zanahoria": "<svg viewBox=\"0 0 100 100\" aria-label=\"Zanahoria\" role=\"img\"><path d=\"M34 30h32L52 92z\" fill=\"#f08a24\"/><path d=\"M50 30c-8-12-6-20-4-24 6 6 8 14 4 24zM50 30c8-12 16-14 22-14-2 8-10 14-22 14z\" fill=\"#4a9d42\"/><path d=\"M42 44h12M46 58h8\" stroke=\"#c9680f\" stroke-width=\"3\"/></svg>", "pepino": "<svg viewBox=\"0 0 100 100\" aria-label=\"Pepino\" role=\"img\"><rect x=\"14\" y=\"34\" width=\"72\" height=\"32\" rx=\"16\" fill=\"#3f8f3a\" transform=\"rotate(-25 50 50)\"/><circle cx=\"38\" cy=\"56\" r=\"2.5\" fill=\"#cdeb9a\"/><circle cx=\"52\" cy=\"48\" r=\"2.5\" fill=\"#cdeb9a\"/><circle cx=\"66\" cy=\"40\" r=\"2.5\" fill=\"#cdeb9a\"/></svg>", "arroz": "<svg viewBox=\"0 0 100 100\" aria-label=\"Arroz\" role=\"img\"><path d=\"M12 50h76c0 24-16 38-38 38S12 74 12 50z\" fill=\"#d95f3b\"/><path d=\"M18 50c4-18 60-18 64 0z\" fill=\"#fffaf0\"/><ellipse cx=\"38\" cy=\"42\" rx=\"5\" ry=\"2.5\" fill=\"#e6dcc6\"/><ellipse cx=\"54\" cy=\"38\" rx=\"5\" ry=\"2.5\" fill=\"#e6dcc6\"/><ellipse cx=\"66\" cy=\"44\" rx=\"5\" ry=\"2.5\" fill=\"#e6dcc6\"/></svg>", "bistec": "<svg viewBox=\"0 0 100 100\" aria-label=\"Bistec de puerco\" role=\"img\"><path d=\"M14 52C10 28 36 14 60 18c22 4 30 28 22 46-10 22-62 22-68-12z\" fill=\"#d9707a\"/><path d=\"M26 56c10 8 28 10 40 2\" stroke=\"#fff4e0\" stroke-width=\"7\" fill=\"none\" stroke-linecap=\"round\"/></svg>", "atun": "<svg viewBox=\"0 0 100 100\" aria-label=\"Atún\" role=\"img\"><rect x=\"14\" y=\"34\" width=\"72\" height=\"44\" rx=\"6\" fill=\"#9aa5ad\"/><ellipse cx=\"50\" cy=\"34\" rx=\"36\" ry=\"9\" fill=\"#c9d1d6\"/><rect x=\"14\" y=\"48\" width=\"72\" height=\"18\" fill=\"#2f6fb5\"/><path d=\"M34 57c8-8 22-8 30 0-8 8-22 8-30 0z\" fill=\"#fff\"/></svg>", "tostada": "<svg viewBox=\"0 0 100 100\" aria-label=\"Tostada\" role=\"img\"><circle cx=\"50\" cy=\"50\" r=\"38\" fill=\"#e0b46a\"/><circle cx=\"50\" cy=\"50\" r=\"30\" fill=\"#f0cf8a\"/><circle cx=\"40\" cy=\"44\" r=\"8\" fill=\"#d9503a\"/><circle cx=\"60\" cy=\"56\" r=\"8\" fill=\"#d9503a\"/><circle cx=\"56\" cy=\"38\" r=\"4\" fill=\"#4a9d42\"/></svg>"},NM={"brocoli": "Brócoli", "chuleta": "Chuleta", "aceite": "Aceite", "tortilla": "Tortilla", "soful": "Soful", "uva": "Uva", "fresa": "Fresa", "lechuga": "Lechuga", "zanahoria": "Zanahoria", "pepino": "Pepino", "arroz": "Arroz", "bistec": "Bistec de puerco", "atun": "Atún", "tostada": "Tostada"},MEALS=[["Desayuno", [["brocoli", "1 taza"], ["chuleta", "1 ½ pza"], ["aceite", "al gusto"], ["tortilla", "1 pza"]]], ["Colación", [["soful", "1 pza"], ["uva", "1 taza"], ["fresa", "1 taza"]]], ["Comida", [["lechuga", "3 tazas"], ["zanahoria", "½ taza"], ["pepino", "1 taza"], ["arroz", "¼ taza"], ["bistec", "120 g"]]], ["Colación", [["arroz", "¼ taza"]]], ["Cena", [["brocoli", "1 taza"], ["atun", "1 lata"], ["tostada", "2 pzas"]]]];
+const m=document.getElementById('m'),dots=document.getElementById('dots');
+let h='<section id="s0"><div class="eye rv">LUNES</div><h1 class="rv" style="--i:1">Menú<br>del día.</h1><p class="sub rv" style="--i:2">Cinco momentos. Toca cada ingrediente para marcarlo.</p><div class="float">'
++['brocoli','chuleta','tortilla','uva','fresa','zanahoria','arroz','atun','tostada','pepino','lechuga'].map((k,i)=>'<div class="rv" style="--i:'+(i+3)+'"><div style="--i:'+i+'">'+IC[k].replace('<svg','<svg style="--i:'+i+'"')+'</div></div>').join('')
++'</div><a class="cta rv" style="--i:6" href="#s1">Empezar ›</a></section>';
+let total=0;
+MEALS.forEach((x,i)=>{const n=x[1].length;total+=n;
+h+='<section id="s'+(i+1)+'"><div class="eye rv">'+(i+1)+' DE '+MEALS.length+'</div><h2 class="rv" style="--i:1">'+x[0]+'</h2><p class="sub rv" style="--i:2">'+n+(n>1?' ingredientes':' ingrediente')+'</p><div class="grid'+(n==1?' one':'')+'">'
++x[1].map((it,j)=>'<button class="card rv" style="--i:'+(j+3)+'">'+'<span class="chk"></span>'+IC[it[0]]+'<b>'+NM[it[0]]+'</b><span class="q">'+it[1]+'</span></button>').join('')+'</div></section>';
+});
+m.innerHTML=h;
+for(let i=0;i<=MEALS.length;i++)dots.insertAdjacentHTML('beforeend','<a href="#s'+i+'" aria-label="Sección '+i+'"></a>');
+const nEl=document.getElementById('n'),bEl=document.getElementById('b');
+function upd(){const d=document.querySelectorAll('.card.done').length;nEl.textContent=d+'/'+total;bEl.style.width=(d/total*100)+'%'}
+nEl.textContent='0/'+total;
+m.addEventListener('click',e=>{const c=e.target.closest('.card');if(c){c.classList.toggle('done');upd()}});
+const secs=[...document.querySelectorAll('section')],da=[...dots.children];
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.05,rootMargin:'0px 0px -6% 0px'});
+document.querySelectorAll('.rv').forEach(r=>io.observe(r));
+const io2=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)da.forEach((a,i)=>a.classList.toggle('on',secs[i]===e.target))}),{rootMargin:'-50% 0px -50% 0px'});
+secs.forEach(s=>io2.observe(s));
+document.addEventListener('keydown',e=>{const cur=da.findIndex(a=>a.classList.contains('on'));
+if(['ArrowDown','ArrowRight','PageDown'].includes(e.key)&&cur<secs.length-1){e.preventDefault();secs[cur+1].scrollIntoView()}
+if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)&&cur>0){e.preventDefault();secs[cur-1].scrollIntoView()}});
+</script></body></html>
